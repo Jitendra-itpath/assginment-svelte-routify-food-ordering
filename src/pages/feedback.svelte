@@ -1,64 +1,79 @@
 <script lang="ts">
-    import suite from "../validation/suite";
+    import feedbackSuite from "../validation/feedbackSuite";
     import classnames from "vest/classnames";
     import InputText from "../components/InputText.svelte";
     import InputArea from "../components/InputArea.svelte";
     import ButtonSubmit from "../components/ButtonSubmit.svelte";
+    import { feedbackInfo } from "../stores/StoresData";
 
     let formState : {username? : string, email? : string, message? : string} = {}; 
-    let result = suite.get();
+    let result = feedbackSuite.get();
     const handleChange = (name) => {    
-      result = suite(formState,name)
+      result = feedbackSuite(formState,name)
     };
+    
     $: cn = classnames(result, {
         warning: "warning",
         invalid: "error",
         valid: "success"
     }); 
     $: disabled = !result.isValid();
-    
+
+    function handleFeedback(event){
+        event.preventDefault();
+        if(result.isValid()){
+            feedbackInfo.update(feedback => [...feedback, { userName : formState.username, userEmail : formState.email , message : formState.message } ] );
+            feedbackSuite.reset();
+            event.target.reset();
+            disabled = true;
+        }
+    }
+    function formReset(){
+        result.isValid();
+        disabled=true;
+    }
 </script>
 <div class="grid md:grid-cols-2 md:gap:24 pt-6">
     <div class="bg-white rounded-lg shadow border border-gray-300 md:mx-5 md:mr-18 mx-3">
         <div class="px-6 py-6 lg:px-8">
-              <form on:submit|preventDefault class="space-y-6"  action="#">
+              <form on:submit|preventDefault={handleFeedback} class="space-y-6" action="#">
 
                 <InputText
-                    name="username"
-                    label="Name"
-                    placeholder="Name"
-                    bind:value={formState.username}
-                    onInput={handleChange}
-                    messages={result.getErrors("username")}
-                    validityclass={cn("username")}
+                name="username"
+                label="Name"
+                placeholder="Name"
+                bind:value={formState.username}
+                onInput={handleChange}
+                messages={result.getErrors("username")}
+                validityclass={cn("username")}
                 />
 
                 <InputText
-                    name="email"
-                    label="Email"
-                    placeholder="adam.smith@gmail.com"
-                    bind:value={formState.email}
-                    onInput={handleChange}
-                    messages={[... result.getErrors("email")]}
-                    validityclass={cn("email")}
+                name="email"
+                label="Email"
+                placeholder="adam.smith@gmail.com"
+                bind:value={formState.email}
+                onInput={handleChange}
+                messages={[... result.getErrors("email")]}
+                validityclass={cn("email")}
                 />
 
                 <InputArea
-                    name="message"
-                    label="Message"
-                    placeholder="message"
-                    bind:value={formState.message}
-                    onInput={handleChange}
-                    messages={[... result.getErrors("message")]}
-                    validityclass={cn("message")}
+                name="message"
+                label="Message"
+                placeholder="message"
+                bind:value={formState.message}
+                onInput={handleChange}
+                messages={[... result.getErrors("message")]}
+                validityclass={cn("message")}
                 />
 
-                  <div class="flex items-center rounded-b">
-                      <div class="ml-auto">
+                <div class="flex items-center rounded-b">
+                    <div class="ml-auto">
                         <ButtonSubmit {disabled}>Submit</ButtonSubmit>
-                          <button type="reset"  class="mx-1 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Reset</button>
-                      </div>
-                  </div>
+                        <button type="reset" class="mx-1 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Reset</button>
+                    </div>
+                </div>
               </form>
         </div>
     </div>

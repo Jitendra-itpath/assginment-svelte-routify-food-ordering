@@ -1,7 +1,38 @@
+html, body {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
 body {
 	color: #333;
 	margin: auto;
 	padding: auto;
 	box-sizing: border-box;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+
+@media (max-width: 640px) {
+	table {
+		overflow-x: auto;
+		white-space: nowrap;
+		width: 100%;
+	}
+	thead{
+		display: none;
+	}
+	td::before {
+		content: attr(data-th);
+		float: left;
+		margin-right: 20px;
+		color: black;
+		font-weight: bold;
+	}
+	td {
+		display: block;
+		text-align: right;
+	}
+	td div{
+		float: right;
+	}
 }

@@ -8,7 +8,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<header class="fixed w-full bg-green-600 py-6 px-10 left-0 right-0 top-0">
+<header class="fixed z-[+1] w-full bg-green-600 py-6 px-10 left-0 right-0 top-0">
     <nav class="justify-between items-center">
       <div class="md:flex md:justify-between">
         <div class="flex justify-between">

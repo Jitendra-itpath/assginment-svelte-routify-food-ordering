@@ -1,6 +1,6 @@
 import { create, test, enforce, only } from 'vest';
   
-const suite = create((data = {}, currentField) => {
+const feedbackSuite = create((data = {}, currentField) => {
 
   only(currentField);
 
@@ -8,7 +8,7 @@ const suite = create((data = {}, currentField) => {
     enforce(data.username).isNotBlank();
   });
 
-  test('username', 'Username must be at least 2 characters.', () => {
+  test('username', 'Name must be at least 3 characters.', () => {
     enforce(data.username).longerThan(2);
   });
 
@@ -16,19 +16,17 @@ const suite = create((data = {}, currentField) => {
     enforce(data.email).isNotBlank();
   });
 
-  test('email', 'Email must be valid.', () => {
+  test('email', ' Please enter a valid email address.', () => {
     enforce(data.email).matches(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email address.');
   });
-
-  test('message', 'message is required', () => {
+  
+  test('message', 'This field is required.', () => {
     enforce(data.message).isNotBlank();
   });
 
-  test('message', 'message should not contain numerical characters', () => {
-    enforce(data.message).matches(/^[^0-9]*$/);
+  test('message', 'Message is too long, only 50 characters are allowd.', () => {
+    enforce(data.message).shorterThan(51);
   });
-  
 });
 
-export default suite;
-
+export default feedbackSuite;
