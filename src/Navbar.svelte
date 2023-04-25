@@ -1,12 +1,10 @@
 <script lang="ts">
     import { navigationRoute } from "./enums/navigationEnum"
-    let showMenu:boolean = false;
+    $: showMenu = false;
     function toggleNavbar():void {
         showMenu = !showMenu;
     }
-
 </script>
-
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <header class="fixed z-[+1] w-full bg-green-600 py-6 px-10 left-0 right-0 top-0">
     <nav class="justify-between items-center">

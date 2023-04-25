@@ -10,8 +10,7 @@
     import InputFile from '../components/InputFile.svelte';
     import ButtonSubmit from '../components/ButtonSubmit.svelte';
 
-
-    let feedbackData = $feedbackInfo;
+    $: feedbackData = $feedbackInfo;
     feedbackData = _.reverse( feedbackData )
 
     let formState : {name? : string, price? : number, description? : string , image? : string } = {    }; 
@@ -43,6 +42,7 @@
             console.log($productInfo);
         }
     }
+    
 </script>
 
 <form on:submit|preventDefault={handleProduct} class="space-y-6" action="#">
@@ -98,35 +98,37 @@
 
 <div class="md:mx-10 mx-2 md:pt-6 pt-2">
     <div class="overflow-x-auto shadow-md sm:rounded-lg ">
-        <table class="w-full text-sm text-left text-gray-500  mt-10">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                <tr>
-                    <th scope="col" class="px-6 py-3">
-                        Name
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Email
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Message
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each feedbackData as user}
-                    <tr class="bg-white border-b">
-                        <td data-th="Name" class="px-6 py-4 font-medium whitespace-nowrap ">
-                            {user.userName}
-                        </td>
-                        <td data-th="Email" class="px-6 py-4">
-                            {user.userEmail}
-                        </td>
-                        <td data-th="Message" class="px-6 py-4">
-                            {user.message}
-                        </td>
+        <div class="r-table">
+            <table class="w-full text-sm text-left text-gray-500  mt-10">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Name
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Email
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Message
+                        </th>
                     </tr>
-                {/each} 
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {#each feedbackData as user}
+                        <tr class="bg-white border-b">
+                            <td data-th="Name" class="px-6 py-4 font-medium whitespace-nowrap ">
+                                {user.userName}
+                            </td>
+                            <td data-th="Email" class="px-6 py-4">
+                                {user.userEmail}
+                            </td>
+                            <td data-th="Message" class="px-6 py-4">
+                                {user.message}
+                            </td>
+                        </tr>
+                    {/each} 
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
