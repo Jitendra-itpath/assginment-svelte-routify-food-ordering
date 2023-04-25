@@ -13,26 +13,26 @@ body {
 
 
 @media (max-width: 640px) {
-	table {
+	.r-table table {
 		overflow-x: auto;
 		white-space: nowrap;
 		width: 100%;
 	}
-	thead{
+	.r-table thead{
 		display: none;
 	}
-	td::before {
+	.r-table td::before {
 		content: attr(data-th);
 		float: left;
 		margin-right: 20px;
 		color: black;
 		font-weight: bold;
 	}
-	td {
+	.r-table td {
 		display: block;
 		text-align: right;
 	}
-	td div{
+	.r-table td div{
 		float: right;
 	}
 }
