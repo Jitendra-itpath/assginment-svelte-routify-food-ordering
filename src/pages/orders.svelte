@@ -32,7 +32,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-missing-attribute -->
-<div class="md:mx-10 mx-2 md:pt-6 pt-2">
+<div class="md:mx-10 mx-2 md:pt-6 pt-2 hidden md:block">
     <div class="overflow-x-auto shadow-md sm:rounded-lg ">
         <table class="w-full text-sm text-left text-gray-700  mt-10">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 md:table-header-group hidden">
@@ -52,13 +52,16 @@
                     <th scope="col" class="px-6 py-3">
                         Total Price
                     </th>
+                    <th>
+                        
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 {#each cartdata as cart}
                     <tr class="bg-white border-b">
                         <td data-th="Dish Image" class="px-6 py-4 font-medium whitespace-nowrap ">
-                            <img class="w-24" src="{getProductName(cart.productId).productImage}">
+                            <img class="rounded-lg w-32 h-24 object-cover" src="{getProductName(cart.productId).productImage}">
                         </td>
                         <td data-th="Dish Name" class="px-6 py-4">
                             {getProductName(cart.productId).productName}
@@ -67,20 +70,65 @@
                             {getProductName(cart.productId).productPrice}
                         </td>
                         <td data-th="Quantity" class="px-6 py-4">
-                            <span on:click={() => decrease(cart.cartId)} class="mx-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded select-none">
-                                <i class="fa-solid fa-minus"></i>
-                            </span>
-                            {cart.quantity}
-                            <span on:click={() => increase(cart.cartId)} class="ml-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded select-none">
-                                <i class="fa-solid fa-plus"></i>
-                            </span>
+                            <div class="flex">
+                                <div on:click={() => decrease(cart.cartId)} class="mx-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded select-none">
+                                    <i class="fa-solid fa-minus"></i>
+                                </div>
+                                <div class="mt-2">
+                                    {cart.quantity}
+                                </div>
+                                <div on:click={() => increase(cart.cartId)} class="ml-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded select-none">
+                                    <i class="fa-solid fa-plus"></i>
+                                </div>
+                            </div>
                         </td>
                         <td data-th="Price" class="px-6 py-4">
                             {getProductName(cart.productId).productPrice * cart.quantity}
+                        </td>
+                        <td>
+                            <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
                         </td>
                     </tr>
                 {/each} 
             </tbody>
         </table>
     </div>
+</div>
+
+<!-- svelte-ignore a11y-img-redundant-alt a11y-click-events-have-key-events a11y-missing-attribute -->
+<div class="px-2 py-1 md:hidden flex-row sm:grid sm:grid-cols-2"> 
+    {#each cartdata as cart}
+        <div class="bg-white rounded-lg overflow-hidden shadow-lg my-3 grid grid-cols-7 gap-2">
+            <div class="col-span-3">
+                    <a href="/#">
+                        <img src="{getProductName(cart.productId).productImage}" alt="Product Image" class="w-full h-56 object-cover">
+                    </a>
+            </div>
+            <div class="px-2 py-2 col-span-4">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 my-2">{getProductName(cart.productId).productName}</h5>
+                <p class="mb-3 font-bold ">
+                        Price : 
+                        <span class="text-red-900">{getProductName(cart.productId).productPrice}</span>
+                    </p>
+                <p class="mb-3 font-normal text-gray-700">
+                        <span on:click={() => decrease(cart.cartId)} class="text-1xl bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded select-none">
+                            <i class="fa-solid fa-minus"></i>
+                        </span>
+                        <span class="mx-2">{cart.quantity}</span>
+                        <span on:click={() => increase(cart.cartId)} class="text-1xl bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded select-none">
+                            <i class="fa-solid fa-plus"></i>
+                        </span>
+                </p>
+                <p class="mb-3 font-bold ">
+                    Total price : 
+                    <span> {getProductName(cart.productId).productPrice * cart.quantity} </span>
+                </p>
+                <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
+                    Remove
+                </button>
+            </div>
+        </div>
+    {/each}
 </div>
