@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+import * as _ from 'lodash';
 
 export const feedbackInfo = writable([
     { userName : 'Rohit', userEmail : 'Rohit11@gmail.com' , message : "This is message for feedback." },
@@ -34,18 +35,3 @@ export const cartInfo = writable ([
     { cartId : 2 ,productId : 2 , quantity : 2 },
     { cartId : 3 ,productId : 3 , quantity : 1 },
 ])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
