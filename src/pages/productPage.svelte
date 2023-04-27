@@ -2,6 +2,11 @@
     import { productInfo } from "../stores/StoresData";
     import { cartInfo } from "../stores/StoresData";
     import * as _ from 'lodash'
+    import toastr from 'toastr';
+	import 'toastr/build/toastr.min.css';
+	toastr.options.positionClass = 'toast-top-right ';
+	toastr.options.timeOut = 2000;
+
     let id = new URLSearchParams(window.location.search).get('id');
     
     let productData = $productInfo;
@@ -17,6 +22,7 @@
             cartId = _.last(cartdata).cartId + 1
         }
         cartInfo.update(cart => [...cart , { cartId: cartId, productId : product.productId ,quantity : quantity } ])
+        toastr.success('Dish added to orders.')
     }
 </script>
 

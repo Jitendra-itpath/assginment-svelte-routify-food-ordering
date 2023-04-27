@@ -2,7 +2,11 @@
     import { productInfo } from '../stores/StoresData';
     import { cartInfo } from '../stores/StoresData';
     import * as _ from 'lodash'
-
+    import toastr from 'toastr';
+    import 'toastr/build/toastr.min.css';
+    toastr.options.positionClass = 'toast-top-right ';
+    toastr.options.timeOut = 2000;
+    
     $: cartdata = $cartInfo;
     $: productData = $productInfo;
     
@@ -19,7 +23,7 @@
             return cart;
         })
     }
-    function decrease(id){
+    function decrease(id:number):void{
         cartInfo.update( cart => {
             let dish = _.find(cart, p => p.cartId == id)
             if(dish){
@@ -28,7 +32,15 @@
             return cart;
         })
     }
-
+    function removeCartData(id:number):void{
+        cartInfo.update( cart =>{
+            let result = _.remove(cart,x => x.cartId == id);
+            if(result.length > 0){
+                toastr.success('Dish Removed.')
+            }
+            return cart
+        } )
+    }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-missing-attribute -->
@@ -86,7 +98,7 @@
                             {getProductName(cart.productId).productPrice * cart.quantity}
                         </td>
                         <td>
-                            <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
+                            <button on:click={()=>{removeCartData(cart.cartId)}} type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </td>
@@ -125,7 +137,7 @@
                     Total price : 
                     <span> {getProductName(cart.productId).productPrice * cart.quantity} </span>
                 </p>
-                <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
+                <button on:click={()=>{removeCartData(cart.cartId)}}  type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
                     Remove
                 </button>
             </div>

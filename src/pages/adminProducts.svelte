@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { feedbackInfo } from '../stores/StoresData';
     import { productInfo } from '../stores/StoresData';
     import * as _ from 'lodash'
     import productSuite from '../validation/productSuite';
@@ -9,6 +8,11 @@
     import InputArea from '../components/InputArea.svelte';
     import InputFile from '../components/InputFile.svelte';
     import ButtonSubmit from '../components/ButtonSubmit.svelte';
+    import toastr from 'toastr';
+    import 'toastr/build/toastr.min.css';
+	toastr.options.positionClass = 'toast-top-right ';
+	toastr.options.timeOut = 2000;
+    
 
     $: productData = $productInfo;
     let blurScreen : boolean = false
@@ -40,6 +44,7 @@
             event.target.reset();
             disabled = true;
             formToggle('update')
+            toastr.success('Dish added to successfully.')
         }
     }
     
@@ -86,6 +91,7 @@
             }
             return product;
         })
+        toastr.success('Dish updated to successfully.')
         formToggle('update')
         formState.name = '';
         formState.price = undefined;
@@ -111,60 +117,9 @@
             }
             return product;
         })
+        toastr.success('Dish deleted to successfully.')
     }
 </script>
-<!-- 
-<form on:submit|preventDefault={handleProduct} class="space-y-6" action="#">
-    <div class="grid md:grid-cols-2 md:gap:24 bg-white rounded-lg shadow border border-gray-300 md:mx-5 md:mr-18 mx-3 py-4">
-        <div class="px-6 pt-3 md:pb-3 lg:px-8">  
-            <div class="mb-4">
-                <InputText
-                name="name"
-                label="Name"
-                placeholder="name"
-                bind:value={formState.name}
-                onInput={handleChange}
-                messages={result.getErrors("name")}
-                validityclass={cn("name")}
-                />
-            </div>
-            <div class="mb-4">
-                <InputNumber
-                name="price"
-                label="Price"
-                placeholder="price"
-                bind:value={formState.price}
-                onInput={handleChange}
-                messages={result.getErrors("price")}
-                validityclass={cn("price")}
-                />
-            </div>
-            <div class="mb-4">
-                <InputArea
-                name="description" label="Description"
-                placeholder="Description"
-                bind:value={formState.description}
-                onInput={handleChange}
-                messages={result.getErrors("description")}
-                validityclass={cn("description")}
-                />
-            </div>
-        </div>
-        <div class="px-6 md:py-3 lg:px-8">
-            <InputFile 
-                name="image" label="Image"
-                bind:value={formState.image}
-                onChange={handleChange}
-                messages={result.getErrors("image")}
-                validityclass={cn("image")}
-            />
-            <div class="my-3">
-                <ButtonSubmit {disabled}>Add Dish</ButtonSubmit>
-            </div>
-        </div>
-    </div>
-</form> -->
-
 
 <div class="md:ml-16 ml-4">
     <button type="button" on:click={() => {formToggle('add')} } class=" disabled:opacity-40 mx-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Add New Dish</button>
@@ -187,6 +142,9 @@
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Description
+                    </th>
+                    <th>
+                        Action
                     </th>
                 </tr>
             </thead>
