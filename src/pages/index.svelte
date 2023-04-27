@@ -1,8 +1,12 @@
 <script lang="ts">
-     import { productInfo } from '../stores/StoresData';
-	 import { url } from '@sveltech/routify';
-     import * as _ from 'lodash'
-	 import { cartInfo } from '../stores/StoresData';
+	import { productInfo , cartInfo } from '../stores/StoresData';
+	import { url } from '@sveltech/routify';
+	import * as _ from 'lodash'
+	import toastr from 'toastr';
+	import 'toastr/build/toastr.min.css';
+	toastr.options.positionClass = 'toast-top-right ';
+	toastr.options.timeOut = 2000;
+
      $:productData = $productInfo;
      productData = _.reverse(productData)
 	 const addToCart = (id) => {
@@ -12,6 +16,7 @@
             cartId = _.last(cartdata).cartId + 1
         }
         cartInfo.update(cart => [...cart , { cartId: cartId, productId : id ,quantity : 1 } ])
+		toastr.success('Dish added to orders.')
 	 }
 </script>
 
