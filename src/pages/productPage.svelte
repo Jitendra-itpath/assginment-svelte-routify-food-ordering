@@ -18,7 +18,7 @@
     let cartdata = $cartInfo;
     function addToCart(){
         let cartId = 1
-        if(_.last(cartdata).cartId != undefined){
+        if(Object.keys(cartdata).length > 0){
             cartId = _.last(cartdata).cartId + 1
         }
         cartInfo.update(cart => [...cart , { cartId: cartId, productId : product.productId ,quantity : quantity } ])

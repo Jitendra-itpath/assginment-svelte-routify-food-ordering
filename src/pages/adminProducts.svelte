@@ -30,20 +30,19 @@
     }); 
     $: disabled = !result.isValid();
     
-    function handleProduct(event){
+    function handleProduct(event):void{
         event.preventDefault();
         let productId = 1;
         let productData = $productInfo;
-        if(_.last(productData) != undefined){
+        if(Object.keys(productData).length > 0){
             productId = (_.last(productData)).productId + 1;
         }
-
         if(result.isValid()){
             productInfo.update(products => [...products, {  productId : productId , productName : formState.name , productPrice : formState.price , productDescription : formState.description, productImage : formState.image } ] );
             productSuite.reset();
             event.target.reset();
             disabled = true;
-            formToggle('update')
+            formToggle('add')
             toastr.success('Dish added to successfully.')
         }
     }
@@ -68,7 +67,7 @@
         }
         blurScreen = !blurScreen
     }
-    function setEditProduct(id:number){
+    function setEditProduct(id:number):void{
         let productData = $productInfo;
         let product = _.find(productData,p => p.productId == id)
         formState.name = product.productName;
@@ -80,7 +79,7 @@
         formToggle('update')
     }
     let updateId:number = 0;
-    function updateProduct(){
+    function updateProduct():void{
         productInfo.update( product => {
             let dish = _.find(product, p => p.productId == updateId)
             if(dish){
@@ -101,14 +100,14 @@
     let displayDelete:string = '';
     let deletename :string = '';
     let deleteId : number = 0
-    function setPeoductDelete(id:number){
+    function setPeoductDelete(id:number):void{
         deletename = ''
         formToggle('delete')
         let dish = _.find(productData, p => p.productId == id)
         displayDelete = dish.productName;
         deleteId = dish.productId;
     }
-    function deleteProduct(){
+    function deleteProduct():void{
         productInfo.update( product => {
             let dish = _.find(product, p => p.productId == deleteId)
             if(dish.productName === deletename){
@@ -119,9 +118,23 @@
         })
         toastr.success('Dish deleted to successfully.')
     }
+    let openAction = null;
+    function toggleAction(id:number):void{
+        if(openAction !== id){
+            if(openAction == 0){
+                openAction = null;
+            }
+            else{
+                openAction = id;
+            }
+        }
+        else{
+            openAction = null;
+        }
+    }
 </script>
 
-<div class="md:ml-16 ml-4">
+<div class="md:ml-16 ml-4 pt-4">
     <button type="button" on:click={() => {formToggle('add')} } class=" disabled:opacity-40 mx-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center ">Add New Dish</button>
 </div>
 
@@ -164,10 +177,18 @@
                             {product.productDescription}
                         </td>
                         <td>
-                            <div class="flex">
-                                <button on:click={ ()=> { setEditProduct(product.productId) }} type="button" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Edit</button>
-                            
-                                <button on:click={ ()=> { setPeoductDelete(product.productId) }} type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Delete</button>
+                            <button type="button" class="m-3">
+                                <span class="text-3xl font-bold p-3" on:click={ ()=> { toggleAction(product.productId) }} on:mouseleave={ ()=>{  } }>
+                                    <i class="fa-solid fa-ellipsis"></i>
+                                </span>
+                            </button>
+                            <div class="{(openAction === product.productId)?'':'hidden'} rounded-lg overflow-hidden shadow-md md:absolute bg-white md:w-40 w-full px-4 by-1 text-center">
+                                <div>
+                                    <button on:click={ ()=> { setEditProduct(product.productId) , toggleAction(0) }} type="button" class="w-20 focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Edit</button>
+                                </div>
+                                <div>
+                                    <button on:click={ ()=> { setPeoductDelete(product.productId) , toggleAction(0) }} type="button" class=" w-20 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Delete</button>
+                                </div>
                             </div>
                         </td>
                     </tr>

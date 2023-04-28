@@ -5,13 +5,22 @@
     import InputArea from "../components/InputArea.svelte";
     import ButtonSubmit from "../components/ButtonSubmit.svelte";
     import { feedbackInfo } from "../stores/StoresData";
+    import toastr from 'toastr';
+    import 'toastr/build/toastr.min.css';
+	toastr.options.positionClass = 'toast-top-right ';
+	toastr.options.timeOut = 2000;
 
     let formState : {username? : string, email? : string, message? : string} = {}; 
     let result = feedbackSuite.get();
     const handleChange = (name) => {    
       result = feedbackSuite(formState,name)
     };
-    
+
+    function formReset(){
+        feedbackSuite.reset();
+        disabled=true;
+    }
+
     $: cn = classnames(result, {
         warning: "warning",
         invalid: "error",
@@ -23,15 +32,13 @@
         event.preventDefault();
         if(result.isValid()){
             feedbackInfo.update(feedback => [...feedback, { userName : formState.username, userEmail : formState.email , message : formState.message } ] );
+            toastr.success('Feedback added to successfully.')
             feedbackSuite.reset();
             event.target.reset();
             disabled = true;
         }
     }
-    function formReset(){
-        result.isValid();
-        disabled=true;
-    }
+    
 </script>
 <div class="grid md:grid-cols-2 md:gap:24 pt-6">
     <div class="bg-white rounded-lg shadow border border-gray-300 md:mx-5 md:mr-18 mx-3">
@@ -71,7 +78,7 @@
                 <div class="flex items-center rounded-b">
                     <div class="ml-auto">
                         <ButtonSubmit {disabled}>Submit</ButtonSubmit>
-                        <button type="reset" class="mx-1 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Reset</button>
+                        <button on:click={formReset} type="reset" class="mx-1 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Reset</button>
                     </div>
                 </div>
               </form>

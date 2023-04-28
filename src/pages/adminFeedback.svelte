@@ -2,6 +2,7 @@
     import { feedbackInfo } from '../stores/StoresData';
     import * as _ from 'lodash'
     
+    
     $: feedbackData = $feedbackInfo;
     feedbackData = _.reverse( feedbackData )
 </script>
