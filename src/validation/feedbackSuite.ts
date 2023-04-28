@@ -27,6 +27,7 @@ const feedbackSuite = create((data = {}, currentField) => {
   test('message', 'Message is too long, only 50 characters are allowd.', () => {
     enforce(data.message).shorterThan(51);
   });
+  
 });
 
 export default feedbackSuite;
