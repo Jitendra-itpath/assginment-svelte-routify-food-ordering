@@ -1,29 +1,17 @@
 <script lang="ts">
+    import { addToCart } from "../stores/AddCartData";
     import { productInfo } from "../stores/StoresData";
-    import { cartInfo } from "../stores/StoresData";
     import * as _ from 'lodash'
     import toastr from 'toastr';
 	import 'toastr/build/toastr.min.css';
 	toastr.options.positionClass = 'toast-top-right ';
 	toastr.options.timeOut = 2000;
-
     let id = new URLSearchParams(window.location.search).get('id');
-    
     let productData = $productInfo;
     let product = _.find(productData,p => p.productId == id)
-    let quantity:number = 1;
+    let quantity = 1;
     const increase = () =>{ quantity++ }
     const decrease = () =>{ (quantity <= 1 )? '':quantity-- }
-
-    let cartdata = $cartInfo;
-    function addToCart(){
-        let cartId = 1
-        if(Object.keys(cartdata).length > 0){
-            cartId = _.last(cartdata).cartId + 1
-        }
-        cartInfo.update(cart => [...cart , { cartId: cartId, productId : product.productId ,quantity : quantity } ])
-        toastr.success('Dish added to orders.')
-    }
 </script>
 
 <!-- svelte-ignore a11y-img-redundant-alt a11y-click-events-have-key-events -->
@@ -37,7 +25,7 @@
             <p class="text-2xl text-gray-500 leading-8 my-5">{product.productDescription}</p>
             <p class="font-bold leading-8 my-5"> 
                 <span class="text-lg text-black-900">Price : </span>
-                <span class="text-lg text-red-500">123</span>
+                <span class="text-lg text-red-500"><span>&#8377; </span>{product.productPrice}</span>
             </p>
         </div>
         <div class="md:h-1/2">
@@ -50,9 +38,9 @@
                     <i class="fa-solid fa-minus"></i>
                 </span>
             </p>
-            <p class="font-bold leading-8 my-6 text-black-900">Total price : { product.productPrice * quantity }</p>
+            <p class="font-bold leading-8 my-6 text-black-900">Total price : <span>&#8377; </span>{ product.productPrice * quantity }</p>
         
-            <button type="button" on:click={addToCart} class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Confirm Order</button>
+            <button type="button" on:click={()=>{ addToCart(Number(id),quantity),quantity} } class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Confirm Order</button>
         </div>
     </div>
 </div>

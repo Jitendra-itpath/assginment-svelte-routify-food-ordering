@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { navigationRoute } from "./enums/navigationEnum"
-    import { cartInfo } from "./stores/StoresData";
+    import { navigationRoute } from "../enums/navigationEnum"
+    import { cartInfo } from "../stores/StoresData";
     let totalDishInCart
     cartInfo.subscribe(value => {
         totalDishInCart = Object.keys(value).length;
@@ -68,4 +68,4 @@
       </div>
     </nav>
   </header>
-  <div class="my-28 md:my-20"></div>
+  <div class="my-20 md:my-24"></div>

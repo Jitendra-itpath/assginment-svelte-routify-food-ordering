@@ -13,7 +13,6 @@
 	toastr.options.positionClass = 'toast-top-right ';
 	toastr.options.timeOut = 2000;
     
-
     $: productData = $productInfo;
     let blurScreen : boolean = false
     
@@ -171,7 +170,7 @@
                             {product.productName}
                         </td>
                         <td class="px-6 py-4">
-                            {product.productPrice}
+                            <span>&#8377; </span>{product.productPrice}
                         </td>
                         <td  class="px-6 py-4 overflow-hidden">
                             {product.productDescription}
@@ -202,15 +201,15 @@
     {#each productData as product}
         <div class="bg-white rounded-lg overflow-hidden shadow-lg my-3 grid grid-cols-7 gap-2">
             <div class="col-span-3">
-                    <a href="/#">
-                        <img src="{product.productImage}" alt="Product Image" class="w-full h-56 object-cover">
-                    </a>
+                <a href="/#">
+                    <img src="{product.productImage}" alt="Product Image" class="w-full h-56 object-cover">
+                </a>
             </div>
             <div class="px-2 py-2 col-span-4">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 my-2">{product.productName}</h5>
                 <p class="mb-3 font-bold ">
                     Price : 
-                    <span class="text-red-900">{product.productPrice}</span>
+                    <span class="text-red-900"><span>&#8377; </span>{product.productPrice}</span>
                 </p>
                 <p class="mb-3 font-normal text-gray-700 overflow-hidden">
                     <span class="font-bold">Description : </span>{product.productDescription}
@@ -224,9 +223,7 @@
         </div>
     {/each}
 </div>
-
   <!-- svelte-ignore a11y-click-events-have-key-events -->
-
   <div class="{blurScreen? '':'hidden' } z-[2] backdrop-blur-sm fixed flex items-center top-0 left-0 right-0 bottom-0 p-4 overflow-x-hidden overflow-y-auto md:inset-0 md:h-full">
     <div class="border border-gray-300 rounded-lg mx-auto w-full max-w-md h-fit popup {updateProductToggle? '':'hidden' }">
         <div class="bg-white rounded-lg shadow">
