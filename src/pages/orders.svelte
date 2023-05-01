@@ -6,14 +6,11 @@
     import 'toastr/build/toastr.min.css';
     toastr.options.positionClass = 'toast-top-right ';
     toastr.options.timeOut = 2000;
-    
     $: cartdata = $cartInfo;
     $: productData = $productInfo;
-    
-    function getProductName(id){
+    function getProductData(id){
         return _.find(productData,x => x.productId == id)
     } 
-    
     function increase(id){
         cartInfo.update( cart => {
             let dish = _.find(cart, p => p.cartId == id)
@@ -65,21 +62,21 @@
                         Total Price
                     </th>
                     <th>
-                        
+                        Delete
                     </th>
                 </tr>
             </thead>
             <tbody>
                 {#each cartdata as cart}
                     <tr class="bg-white border-b">
-                        <td data-th="Dish Image" class="px-6 py-4 font-medium whitespace-nowrap ">
-                            <img class="rounded-lg w-32 h-24 object-cover" src="{getProductName(cart.productId).productImage}">
+                        <td data-th="Dish Image" class="px-6 py-4 whitespace-nowrap ">
+                            <img class="rounded-lg w-32 h-24 object-cover" src="{getProductData(cart.productId).productImage}">
                         </td>
                         <td data-th="Dish Name" class="px-6 py-4">
-                            {getProductName(cart.productId).productName}
+                            {getProductData(cart.productId).productName}
                         </td>
-                        <td data-th="Quantity" class="px-6 py-4">
-                            {getProductName(cart.productId).productPrice}
+                        <td data-th="Quantity" class="px-6 py-4 text-red-900">
+                            <span><span>&#8377; </span>{getProductData(cart.productId).productPrice}</span>
                         </td>
                         <td data-th="Quantity" class="px-6 py-4">
                             <div class="flex">
@@ -95,7 +92,7 @@
                             </div>
                         </td>
                         <td data-th="Price" class="px-6 py-4">
-                            {getProductName(cart.productId).productPrice * cart.quantity}
+                            <span>&#8377; {getProductData(cart.productId).productPrice * cart.quantity}</span>
                         </td>
                         <td>
                             <button on:click={()=>{removeCartData(cart.cartId)}} type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
@@ -115,14 +112,14 @@
         <div class="bg-white rounded-lg overflow-hidden shadow-lg my-3 grid grid-cols-7 gap-2">
             <div class="col-span-3">
                     <a href="/#">
-                        <img src="{getProductName(cart.productId).productImage}" alt="Product Image" class="w-full h-56 object-cover">
+                        <img src="{getProductData(cart.productId).productImage}" alt="Product Image" class="w-full h-56 object-cover">
                     </a>
             </div>
             <div class="px-2 py-2 col-span-4">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 my-2">{getProductName(cart.productId).productName}</h5>
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 my-2">{getProductData(cart.productId).productName}</h5>
                 <p class="mb-3 font-bold ">
                         Price : 
-                        <span class="text-red-900">{getProductName(cart.productId).productPrice}</span>
+                        <span class="text-red-900"><span>&#8377; </span>{getProductData(cart.productId).productPrice}</span>
                     </p>
                 <p class="mb-3 font-normal text-gray-700">
                         <span on:click={() => decrease(cart.cartId)} class="text-1xl bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded select-none">
@@ -135,7 +132,7 @@
                 </p>
                 <p class="mb-3 font-bold ">
                     Total price : 
-                    <span> {getProductName(cart.productId).productPrice * cart.quantity} </span>
+                    <span><span>&#8377; </span> {getProductData(cart.productId).productPrice * cart.quantity} </span>
                 </p>
                 <button on:click={()=>{removeCartData(cart.cartId)}}  type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">
                     Remove

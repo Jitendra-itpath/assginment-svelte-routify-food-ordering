@@ -37,9 +37,9 @@
             event.target.reset();
             disabled = true;
         }
-    }
-    
+    } 
 </script>
+
 <div class="grid md:grid-cols-2 md:gap:24 pt-6">
     <div class="bg-white rounded-lg shadow border border-gray-300 md:mx-5 md:mr-18 mx-3">
         <div class="px-6 py-6 lg:px-8">
@@ -54,7 +54,6 @@
                 messages={result.getErrors("username")}
                 validityclass={cn("username")}
                 />
-
                 <InputText
                 name="email"
                 label="Email"
@@ -64,7 +63,6 @@
                 messages={[... result.getErrors("email")]}
                 validityclass={cn("email")}
                 />
-
                 <InputArea
                 name="message"
                 label="Message"
@@ -74,7 +72,6 @@
                 messages={[... result.getErrors("message")]}
                 validityclass={cn("message")}
                 />
-
                 <div class="flex items-center rounded-b">
                     <div class="ml-auto">
                         <ButtonSubmit {disabled}>Submit</ButtonSubmit>
