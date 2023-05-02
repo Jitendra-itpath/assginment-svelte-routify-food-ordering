@@ -24,7 +24,7 @@
     }
     let interval = null;
     onMount(async () => {
-        interval  = setInterval( () => changeSlide(1), 8000 );
+        interval  = setInterval( () => changeSlide(1), 5000 );
     });
     onDestroy( () => clearInterval( interval ) )
     $:productData = $productInfo;
@@ -57,7 +57,7 @@
       </div>
   </div>
 <!-- svelte-ignore a11y-img-redundant-alt -->
-<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:mx-5 md:mr-18 mx-3 pt-3"> 
+<div class="grid grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4 lg:gap-4 gap-1 md:mx-5 mx-1 pt-3"> 
      {#each productData as product}
 	     <div class="bg-white rounded-lg overflow-hidden shadow-lg border hover:border-gray-300">
 			<a href="{$url('../productPage/?id='+product.productId)}">

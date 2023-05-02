@@ -24,8 +24,8 @@ const productSuite = create((data = {}, currentField) => {
     enforce(data.description).isNotBlank();
   });
 
-  test('description', 'Description is too long, Max 50 characters allowed.', () => {
-    enforce(data.description).shorterThan(51)
+  test('description', 'Description is too long, Max 80 characters allowed.', () => {
+    enforce(data.description).shorterThan(81)
   });
 
   test('image', 'This field is required.', () => {
