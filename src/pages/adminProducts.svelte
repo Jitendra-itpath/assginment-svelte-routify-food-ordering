@@ -14,7 +14,7 @@
 	toastr.options.timeOut = 2000;
     
     $: productData = $productInfo;
-    let blurScreen : boolean = false
+    $: blurScreen = false
     
     let formState : {name? : string, price? : number, description? : string , image? : string } = {    }; 
     let result = productSuite.get();
@@ -45,7 +45,6 @@
             toastr.success('Dish added to successfully.')
         }
     }
-    
     let updateProductToggle : boolean = false; 
     let addProductToggle :boolean = false;
     let deleteProductToggle : boolean = false;
@@ -65,6 +64,12 @@
             deleteProductToggle =! deleteProductToggle;
         }
         blurScreen = !blurScreen
+        if(blurScreen){
+            document.body.classList.add('overflow-hidden');
+        }
+        else{
+            document.body.classList.remove('overflow-hidden');
+        }
     }
     function setEditProduct(id:number):void{
         let productData = $productInfo;
@@ -98,7 +103,8 @@
     }
     let displayDelete:string = '';
     let deletename :string = '';
-    let deleteId : number = 0
+    let deleteId : number = 0 ;
+    let deleteError:string = '';
     function setPeoductDelete(id:number):void{
         deletename = ''
         formToggle('delete')
@@ -111,11 +117,15 @@
             let dish = _.find(product, p => p.productId == deleteId)
             if(dish.productName === deletename){
                 _.remove(product,  p => p.productId == deleteId);
+                deleteError = '';
                 formToggle('delete')
+                toastr.success('Dish deleted to successfully.')
+            }
+            else{
+                deleteError = 'enter valid name';
             }
             return product;
         })
-        toastr.success('Dish deleted to successfully.')
     }
     let openAction = null;
     function toggleAction(id:number):void{
@@ -216,7 +226,7 @@
                 </p>
                 <div class="flex">
                     <button on:click={ ()=> { setEditProduct(product.productId) }} type="button" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Edit</button>
-                
+
                     <button on:click={ ()=> { setPeoductDelete(product.productId) }} type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Delete</button>
                 </div>
             </div>
@@ -224,7 +234,7 @@
     {/each}
 </div>
   <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <div class="{blurScreen? '':'hidden' } z-[2] backdrop-blur-sm fixed flex items-center top-0 left-0 right-0 bottom-0 p-4 overflow-x-hidden overflow-y-auto md:inset-0 md:h-full">
+  <div class="{blurScreen? '':'hidden' } z-[1] backdrop-blur-sm fixed flex items-center top-0 left-0 right-0 bottom-0 p-4 overflow-x-hidden overflow-y-auto md:inset-0 md:h-full">
     <div class="border border-gray-300 rounded-lg mx-auto w-full max-w-md h-fit popup {updateProductToggle? '':'hidden' }">
         <div class="bg-white rounded-lg shadow">
             <div class="px-6 py-6 lg:px-8">
@@ -345,8 +355,8 @@
                 <h3 class="mb-4 text-xl font-medium text-gray-900 "> Delete - {displayDelete} </h3>
                     <div>
                         <input bind:value={deletename} type="text" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
-                        focus:border-blue-500 block w-full p-2.5 " placeholder="[Product_Name]" >
-                        <span class="text-red-500"></span>
+                        focus:border-blue-500 block w-full p-2.5 " placeholder="Product Name" >
+                        <span class="text-red-500">{deleteError}</span>
                     </div>
                     <div class="mt-2 flex items-center rounded-b">
                         <div class="ml-auto">

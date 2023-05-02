@@ -1,6 +1,7 @@
 <script lang="ts">
     import { productInfo } from '../stores/StoresData';
     import { cartInfo } from '../stores/StoresData';
+    import { url } from '@sveltech/routify';
     import * as _ from 'lodash'
     import toastr from 'toastr';
     import 'toastr/build/toastr.min.css';
@@ -15,7 +16,7 @@
         cartInfo.update( cart => {
             let dish = _.find(cart, p => p.cartId == id)
             if(dish){
-                dish.quantity++;
+                dish.quantity = dish.quantity + 1;
             }
             return cart;
         })
@@ -24,7 +25,7 @@
         cartInfo.update( cart => {
             let dish = _.find(cart, p => p.cartId == id)
             if(dish){
-                (dish.quantity <=1 )? '':dish.quantity--;
+                dish.quantity = (dish.quantity <=1 )? dish.quantity : dish.quantity - 1;
             }
             return cart;
         })
@@ -42,9 +43,9 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-missing-attribute -->
 <div class="md:mx-10 mx-2 md:pt-6 pt-2 hidden md:block">
-    <div class="overflow-x-auto shadow-md sm:rounded-lg ">
-        <table class="w-full text-sm text-left text-gray-700  mt-10">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 md:table-header-group hidden">
+    <div class="overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-700 mt-10">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-200 md:table-header-group hidden">
                 <tr>
                     <th scope="col" class="px-6 py-3">
                         Dish Image
@@ -52,7 +53,7 @@
                     <th scope="col" class="px-6 py-3">
                         Dish name
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-8 py-3">
                         Price
                     </th>
                     <th scope="col" class="px-6 py-3">
@@ -68,15 +69,17 @@
             </thead>
             <tbody>
                 {#each cartdata as cart}
-                    <tr class="bg-white border-b">
+                    <tr class="bg-white border border-gray-200">
                         <td data-th="Dish Image" class="px-6 py-4 whitespace-nowrap ">
-                            <img class="rounded-lg w-32 h-24 object-cover" src="{getProductData(cart.productId).productImage}">
+                            <a href="{$url('../productPage/?id='+cart.productId)}">
+                                <img class="rounded-lg w-32 h-24 object-cover" src="{getProductData(cart.productId).productImage}">
+                            </a>
                         </td>
                         <td data-th="Dish Name" class="px-6 py-4">
                             {getProductData(cart.productId).productName}
                         </td>
-                        <td data-th="Quantity" class="px-6 py-4 text-red-900">
-                            <span><span>&#8377; </span>{getProductData(cart.productId).productPrice}</span>
+                        <td data-th="Quantity" class="px-6 py-4 text-red-900 font-bold">
+                            <span>&#8377; {getProductData(cart.productId).productPrice}</span>
                         </td>
                         <td data-th="Quantity" class="px-6 py-4">
                             <div class="flex">
@@ -91,7 +94,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td data-th="Price" class="px-6 py-4">
+                        <td data-th="Price" class="px-6 py-4 font-bold">
                             <span>&#8377; {getProductData(cart.productId).productPrice * cart.quantity}</span>
                         </td>
                         <td>
