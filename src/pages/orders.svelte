@@ -1,7 +1,7 @@
 <script lang="ts">
     import { productInfo } from '../stores/StoresData';
     import { cartInfo } from '../stores/StoresData';
-    import { url } from '@sveltech/routify';
+    import { url , goto } from '@sveltech/routify';
     import * as _ from 'lodash'
     import toastr from 'toastr';
     import 'toastr/build/toastr.min.css';
@@ -71,9 +71,7 @@
                 {#each cartdata as cart}
                     <tr class="bg-white border border-gray-200">
                         <td data-th="Dish Image" class="px-6 py-4 whitespace-nowrap ">
-                            <a href="{$url('../productPage/?id='+cart.productId)}">
-                                <img class="rounded-lg w-32 h-24 object-cover" src="{getProductData(cart.productId).productImage}">
-                            </a>
+                            <img on:click={ ()=> { $goto('../productPage/?id='+cart.productId) } } class="rounded-lg w-32 h-24 object-cover" src="{getProductData(cart.productId).productImage}">
                         </td>
                         <td data-th="Dish Name" class="px-6 py-4">
                             {getProductData(cart.productId).productName}
@@ -114,9 +112,7 @@
     {#each cartdata as cart}
         <div class="bg-white rounded-lg overflow-hidden shadow-lg my-3 grid grid-cols-7 gap-2">
             <div class="col-span-3">
-                    <a href="/#">
-                        <img src="{getProductData(cart.productId).productImage}" alt="Product Image" class="w-full h-56 object-cover">
-                    </a>
+                <img on:click={ ()=> { $goto('../productPage/?id='+cart.productId) } } src="{getProductData(cart.productId).productImage}" alt="Product Image" class="w-full h-56 object-cover">
             </div>
             <div class="px-2 py-2 col-span-4">
                     <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 my-2">{getProductData(cart.productId).productName}</h5>

@@ -5,7 +5,6 @@
     cartInfo.subscribe(value => {
         totalDishInCart = Object.keys(value).length;
     });
-    
     $: showMenu = false;
     function toggleNavbar():void {
         showMenu = !showMenu;
@@ -14,7 +13,7 @@
     $: showDropdown = false;
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-mouse-events-have-key-events a11y-click-events-have-key-events -->
 <header class="fixed z-[+1] w-full bg-green-600 py-6 px-10 left-0 right-0 top-0">
     <nav class="justify-between items-center">
       <div class="md:flex md:justify-between">
@@ -35,9 +34,6 @@
                 <li class="md:my-0 my-1">
                   <a href="{navigationRoute.Home}" class="text-white font-medium text-lg hover:text-gray-200" on:click={toggleNavbar}>Home</a>
                 </li>
-                <!-- <li class="md:my-0 my-1">
-                  <a href="{navigationRoute.Orders}" class="text-white font-medium text-lg hover:text-gray-200" on:click={toggleNavbar}>Orders</a>
-                </li> -->
                 <li class="md:my-0 my-1">
                   <a href="{navigationRoute.Feedback}" class="text-white font-medium text-lg hover:text-gray-200" on:click={toggleNavbar}>Feedback</a>
                 </li>

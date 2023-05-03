@@ -8,27 +8,25 @@
     import InputArea from '../components/InputArea.svelte';
     import InputFile from '../components/InputFile.svelte';
     import ButtonSubmit from '../components/ButtonSubmit.svelte';
+    import { ImageInfo } from '../stores/ImageStore';
     import toastr from 'toastr';
     import 'toastr/build/toastr.min.css';
 	toastr.options.positionClass = 'toast-top-right ';
 	toastr.options.timeOut = 2000;
-    
     $: productData = $productInfo;
     $: blurScreen = false
-    
     let formState : {name? : string, price? : number, description? : string , image? : string } = {    }; 
     let result = productSuite.get();
     const handleChange = (name) => {    
         result = productSuite(formState,name)
     };
-    
     $: cn = classnames(result, {
         warning: "warning",
         invalid: "error",
         valid: "success"
     }); 
     $: disabled = !result.isValid();
-    
+    //To add new Product 
     function handleProduct(event):void{
         event.preventDefault();
         let productId = 1;
@@ -37,7 +35,8 @@
             productId = (_.last(productData)).productId + 1;
         }
         if(result.isValid()){
-            productInfo.update(products => [...products, {  productId : productId , productName : formState.name , productPrice : formState.price , productDescription : formState.description, productImage : formState.image } ] );
+            productInfo.update(products => [...products, {  productId : productId , productName : formState.name , productPrice : formState.price , productDescription : formState.description, productImage : $ImageInfo } ] );
+            ImageInfo.set('');
             productSuite.reset();
             event.target.reset();
             disabled = true;
@@ -90,7 +89,13 @@
                 dish.productName = formState.name ;
                 dish.productDescription = formState.description;
                 dish.productPrice = formState.price;
-                dish.productImage = formState.image;
+                if($ImageInfo == ''){
+                    dish.productImage = formState.image;
+                }
+                else{
+                    dish.productImage = $ImageInfo;
+                    ImageInfo.set('');
+                }
             }
             return product;
         })
@@ -151,7 +156,7 @@
 <div class="md:mx-10 mx-2 md:pt-6 pt-2 hidden md:block">
     <div class="overflow-x-auto shadow-md sm:rounded-lg ">
         <table class="w-full text-sm text-left text-gray-700  mt-10">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 md:table-header-group hidden">
+            <thead class="text-md text-gray-700 uppercase bg-gray-100 md:table-header-group hidden">
                 <tr>
                     <th scope="col" class="px-6 py-3">
                         Dish Image
@@ -165,7 +170,7 @@
                     <th scope="col" class="px-6 py-3">
                         Description
                     </th>
-                    <th>
+                    <th >
                         Action
                     </th>
                 </tr>
@@ -180,18 +185,18 @@
                             {product.productName}
                         </td>
                         <td class="px-6 py-4">
-                            <span>&#8377; </span>{product.productPrice}
+                            <span>&#8377;</span>{product.productPrice}
                         </td>
                         <td  class="px-6 py-4 overflow-hidden">
                             {product.productDescription}
                         </td>
                         <td>
                             <button type="button" class="m-3">
-                                <span class="text-3xl font-bold p-3" on:click={ ()=> { toggleAction(product.productId) }} on:mouseleave={ ()=>{  } }>
+                                <span class="text-3xl font-bold p-3" on:click={ ()=> { toggleAction(product.productId) }}>
                                     <i class="fa-solid fa-ellipsis"></i>
                                 </span>
                             </button>
-                            <div class="{(openAction === product.productId)?'':'hidden'} rounded-lg overflow-hidden shadow-md md:absolute bg-white md:w-40 w-full px-4 by-1 text-center">
+                            <div class="{(openAction === product.productId)?'':'hidden'} right-6 rounded-lg overflow-hidden shadow-md md:absolute bg-white md:w-28 w-full px-4 text-center">
                                 <div>
                                     <button on:click={ ()=> { setEditProduct(product.productId) , toggleAction(0) }} type="button" class="w-20 focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Edit</button>
                                 </div>

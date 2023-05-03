@@ -1,7 +1,7 @@
 <script lang="ts">
     import { productInfo } from '../stores/StoresData';
     import { addToCart } from '../stores/AddCartData';
-	import { url } from '@sveltech/routify';
+	import { url ,goto } from '@sveltech/routify';
 	import * as _ from 'lodash'
 	import toastr from 'toastr';
 	import 'toastr/build/toastr.min.css';
@@ -29,6 +29,9 @@
     onDestroy( () => clearInterval( interval ) )
     $:productData = $productInfo;
     productData = _.reverse(productData)
+    function productPage(id){
+        $goto('../productPage/?id='+id)
+    }
 </script>
 
 <div class="w-full md:px-1">
@@ -56,17 +59,13 @@
           </button>
       </div>
   </div>
-<!-- svelte-ignore a11y-img-redundant-alt -->
+<!-- svelte-ignore a11y-click-events-have-key-events a11y-img-redundant-alt -->
 <div class="grid grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4 lg:gap-4 gap-1 md:mx-5 mx-1 pt-3"> 
      {#each productData as product}
 	     <div class="bg-white rounded-lg overflow-hidden shadow-lg border hover:border-gray-300">
-			<a href="{$url('../productPage/?id='+product.productId)}">
-		     <img src="{product.productImage}" alt="Product Image" class="w-full h-52 object-cover">
-		 	</a>
+		     <img src="{product.productImage}" on:click={ ()=>productPage(product.productId) } alt="Product Image" class="w-full h-52 object-cover">
 			<div class="px-6 py-4">
-				<a href="{$url('../productPage/?id='+product.productId)}">
-					<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">{product.productName}</h5>
-				</a>
+			    <h5 on:click={ ()=>productPage(product.productId) } class="mb-2 text-2xl font-bold tracking-tight text-gray-900">{product.productName}</h5>
 				<p class="mb-3 font-bold  text-red-900"><span>&#8377; </span>{product.productPrice}</p>
 				<p class="mb-3 font-normal text-gray-700 overflow-hidden">{product.productDescription}</p>
 				<button on:click={()=>{addToCart(product.productId,1)}} type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Order this</button>
