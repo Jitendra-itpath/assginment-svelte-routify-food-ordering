@@ -1,7 +1,8 @@
 export enum navigationRoute {
     Home = '/index',
-    Orders = '/orders',
+    Cart = '/cart',
     Feedback  = '/feedback',
     AdminFeedback = '/adminFeedback',
-    AdminProducts = '/adminProducts'
+    AdminProducts = '/adminProducts',
+    Orders = '/orders',
 }

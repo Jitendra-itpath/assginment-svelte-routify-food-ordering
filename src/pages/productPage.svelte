@@ -14,7 +14,7 @@
     const increase = () =>{ quantity++ }
     const decrease = () =>{ (quantity <= 1 )? '':quantity-- }
     function redirect(){
-        $goto('../orders')
+        $goto('../cart')
     }
 </script>
 
@@ -44,7 +44,7 @@
                 </span>
             </p>
             <p class="font-bold leading-8 my-6 text-black-900">Total price : <span>&#8377; </span>{ product.productPrice * quantity }</p>
-            <button type="button" on:click={()=>{ addToCart(Number(id),quantity) , redirect() } } class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Confirm Order</button>
+            <button type="button" on:click={()=>{ addToCart(Number(id),quantity) , redirect() } } class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Add to cart</button>
         </div>
     </div>
 </div>
