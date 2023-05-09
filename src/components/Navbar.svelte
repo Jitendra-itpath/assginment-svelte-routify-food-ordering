@@ -1,5 +1,4 @@
 <script lang="ts">
-    //import { navigationRoute } from "../enums/navigationEnum"
     import { goto } from "@sveltech/routify"
     import { cartInfo } from "../stores/StoresData";
     let totalDishInCart
@@ -15,13 +14,13 @@
 </script>
 
 <!-- svelte-ignore a11y-mouse-events-have-key-events a11y-click-events-have-key-events  a11y-missing-attribute -->
-<header class="fixed z-[+1] w-full bg-green-600 py-6 md:px-10 px-6 left-0 right-0 top-0">
+<header class="fixed z-[+1] w-full bg-green-600 py-6 md:px-10 px-6 left-0 right-0 top-0" on:mouseleave={()=>{showMenu = false}}>
     <nav class="justify-between items-center">
       <div class="md:flex md:justify-between">
         <div class="flex justify-between">
-            <a href="/#" class="text-white md:text-3xl text-2xl md:mx-2 font-bold"><span class="text-white mx-2"><i class="fa-solid fa-burger"></i></span> BiteBuddy</a>
+            <a on:click={ ()=> { $goto('/#'); showMenu = false; }} class="text-white md:text-3xl text-2xl md:mx-2 font-bold"><span class="text-white mx-2"><i class="fa-solid fa-burger"></i></span> BiteBuddy</a>
             <div class="items-end md:hidden">
-              <a on:click={ ()=> { $goto('/cart') } } class="text-white font-medium text-lg hover:text-gray-200">
+              <a on:click={ ()=> { $goto('/cart'); showMenu = false; } } class="text-white font-medium text-lg hover:text-gray-200">
                 <span class="relative inline-block mr-4">
                   <i class="fa-solid fa-cart-shopping text-white text-2xl"></i>
                   {#if totalDishInCart > 0}
@@ -33,7 +32,7 @@
             </div>
         </div>
         <div class="items-end">
-            <ul id="nav-bar" class="{showMenu? '': 'hidden'} md:flex gap-8 md:mt-1 mt-3 md:space-y-0 space-y-1">
+            <ul id="nav-bar" class="{showMenu? '': 'hidden'}  md:flex gap-8 md:mt-1 mt-3 md:space-y-0 space-y-1">
                 <li class="">
                   <a on:click={ ()=> { $goto('/index') } } class="text-white font-medium text-lg hover:text-gray-200" on:click={toggleNavbar}>Home</a>
                 </li>

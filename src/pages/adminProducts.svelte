@@ -6,7 +6,7 @@
     import InputText from '../components/InputText.svelte';
     import InputNumber from '../components/InputNumber.svelte';
     import InputArea from '../components/InputArea.svelte';
-    import InputFile from '../components/InputFile.svelte';
+    import InputFile from '../components/InputFile.svelte'; 
     import ButtonSubmit from '../components/ButtonSubmit.svelte';
     import { ImageInfo } from '../stores/ImageStore';
     import toastr from 'toastr';
@@ -15,7 +15,7 @@
 	toastr.options.timeOut = 2000;
     $: productData = $productInfo;
     $: blurScreen = false
-    let formState : {name? : string, price? : number, description? : string , image? : string } = {    }; 
+    let formState : {name? : string, price? : number, description? : string , image? : string } = { }; 
     let result = productSuite.get();
     const handleChange = (name) => {    
         result = productSuite(formState,name)
@@ -36,7 +36,7 @@
         }
         if(result.isValid()){
             productInfo.update(products => [...products, {  productId : productId , productName : formState.name , productPrice : formState.price , productDescription : formState.description, productImage : $ImageInfo } ] );
-            ImageInfo.set('');
+            ImageInfo.set(null);
             productSuite.reset();
             event.target.reset();
             disabled = true;
@@ -49,10 +49,10 @@
     let deleteProductToggle : boolean = false;
     function formToggle(formName:string):void{
         if(formName === 'add'){
-            formState.name = '';
+            formState.name = null;
             formState.price = undefined;
-            formState.description = '';
-            formState.image = '';
+            formState.description = null;
+            formState.image = null;
             disabled = true;
             addProductToggle = !addProductToggle;
         }
@@ -89,29 +89,29 @@
                 dish.productName = formState.name ;
                 dish.productDescription = formState.description;
                 dish.productPrice = formState.price;
-                if($ImageInfo == ''){
+                if($ImageInfo === null){
                     dish.productImage = formState.image;
                 }
                 else{
                     dish.productImage = $ImageInfo;
-                    ImageInfo.set('');
+                    ImageInfo.set(null);
                 }
             }
             return product;
         })
         toastr.success('Dish updated to successfully.')
         formToggle('update')
-        formState.name = '';
+        formState.name = null;
         formState.price = undefined;
-        formState.description = '';
-        formState.image = '';
+        formState.description = null;
+        formState.image = null;
     }
-    let displayDelete:string = '';
-    let deletename :string = '';
+    let displayDelete:string = null;
+    let deletename :string = null;
     let deleteId : number = 0 ;
     let deleteError:string = '';
     function setPeoductDelete(id:number):void{
-        deletename = ''
+        deletename = null
         formToggle('delete')
         let dish = _.find(productData, p => p.productId == id)
         displayDelete = dish.productName;
@@ -146,6 +146,7 @@
             openAction = null;
         }
     }
+
 </script>
 
 <div class="md:ml-16 ml-4 pt-4">
@@ -177,7 +178,7 @@
             </thead>
             <tbody>
                 {#each productData as product}
-                    <tr class="bg-white border-b">
+                    <tr class="bg-white hover:bg-gray-200">
                         <td class="px-6 py-4 font-medium whitespace-nowrap ">
                             <img class="rounded-lg w-32 h-24 object-cover" src="{product.productImage}">
                         </td>
@@ -214,7 +215,7 @@
 <!-- svelte-ignore a11y-img-redundant-alt a11y-click-events-have-key-events a11y-missing-attribute -->
 <div class="px-2 py-1 md:hidden flex-row "> 
     {#each productData as product}
-        <div class="bg-white rounded-lg overflow-hidden shadow-lg my-3 grid grid-cols-7 gap-2">
+        <div class="bg-white rounded-lg overflow-hidden shadow-lg my-3 grid grid-cols-7 gap-2 border-double border-0 hover:border-2 hover:border-green-300">
             <div class="col-span-3">
                 <a href="/#">
                     <img src="{product.productImage}" alt="Product Image" class="w-full h-56 object-cover">
@@ -289,7 +290,7 @@
                     <div class="flex items-center rounded-b">
                         <div class="ml-auto">
                             <ButtonSubmit {disabled}>Update details</ButtonSubmit>
-                            <button on:click={ () => {formToggle('update')} } type="button" class="mx-1 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
+                            <button on:click={ () => {formToggle('update')} } type="reset" class="mx-1 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
                         </div>
                     </div>
                 </form>
@@ -346,7 +347,7 @@
                     <div class="flex items-center rounded-b">
                         <div class="ml-auto">
                             <ButtonSubmit {disabled}>Add Dish</ButtonSubmit>
-                            <button on:click={ () => {formToggle('add')} } type="button" class="mx-1 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
+                            <button on:click={ () => {formToggle('add')} } type="reset" class="mx-1 text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
                         </div>
                     </div>
                 </form>
@@ -358,19 +359,18 @@
         <div class="bg-white rounded-lg shadow">
             <div class="px-6 py-6 lg:px-8">
                 <h3 class="mb-4 text-xl font-medium text-gray-900 "> Delete - {displayDelete} </h3>
-                    <div>
-                        <input bind:value={deletename} type="text" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
-                        focus:border-blue-500 block w-full p-2.5 " placeholder="Product Name" >
-                        <span class="text-red-500">{deleteError}</span>
+                <div>
+                    <input bind:value={deletename} type="text" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 
+                    focus:border-blue-500 block w-full p-2.5 " placeholder="Product Name" >
+                    <span class="text-red-500">{deleteError}</span>
+                </div>
+                <div class="mt-2 flex items-center rounded-b">
+                    <div class="ml-auto">
+                        <button on:click={deleteProduct} type="button" class="mx-1 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Delete</button>
+                        <button on:click={()=>formToggle('delete')} type="button" class="mx-1 text-gryay-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
                     </div>
-                    <div class="mt-2 flex items-center rounded-b">
-                        <div class="ml-auto">
-                            <button on:click={deleteProduct} type="button" class="mx-1 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2">Delete</button>
-                            <button on:click={()=>formToggle('delete')} type="button" class="mx-1 text-gryay-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10">Cancel</button>
-                        </div>
-                    </div>
+                </div>
             </div>
         </div>
     </div>
-
 </div>

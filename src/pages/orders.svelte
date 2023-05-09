@@ -1,5 +1,4 @@
 <script lang="ts">
-
     import { orderInfo ,productInfo } from "../stores/StoresData";
     import { goto } from '@sveltech/routify';
     import * as _ from 'lodash'
@@ -22,8 +21,14 @@
         } )
     }
 </script>
-
-
+{#if _.size(orderData) === 0}
+    <div class="w-full flex justify-center pt-12">
+        <img src="../images/no-orders.png" alt="" class="object-cover h-1/3 md:w-1/3">
+    </div>
+    <div class="w-full flex justify-center pt-12">
+        <p class="text-2xl font-bold">No orders available</p>
+    </div>
+{:else}
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-missing-attribute -->
 <div class="md:mx-10 mx-2 md:pt-6 pt-2 hidden md:block">
     <div class="overflow-x-auto shadow-md sm:rounded-lg">
@@ -52,7 +57,7 @@
             </thead>
             <tbody>
                 {#each orderData as order}
-                    <tr class="bg-white border border-gray-200">
+                    <tr class="bg-white hover:bg-gray-200">
                         <td data-th="Dish Image" class="px-6 py-4 whitespace-nowrap ">
                             <img on:click={ ()=> { $goto('../productPage/?id='+order.productId) } } class="rounded-lg w-32 h-24 object-cover" src="{getProductData(order.productId).productImage}">
                         </td>
@@ -87,7 +92,7 @@
 <!-- svelte-ignore a11y-img-redundant-alt a11y-click-events-have-key-events a11y-missing-attribute -->
 <div class="px-2 py-1 md:hidden flex-row sm:grid sm:grid-cols-2"> 
     {#each orderData as order}
-        <div class="bg-white rounded-lg overflow-hidden shadow-lg my-3 grid grid-cols-7 gap-2">
+        <div class="bg-white rounded-lg overflow-hidden shadow-lg my-3 grid grid-cols-7 gap-2  border-double border-0 hover:border-2 hover:border-green-500">
             <div class="col-span-3">
                 <img on:click={ ()=> { $goto('../productPage/?id='+order.productId) } } src="{getProductData(order.productId).productImage}" alt="Product Image" class="w-full h-56 object-cover">
             </div>
@@ -112,3 +117,4 @@
         </div>
     {/each}
 </div>
+{/if}
