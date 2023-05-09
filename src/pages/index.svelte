@@ -1,14 +1,14 @@
 <script lang="ts">
+    import { onDestroy, onMount } from 'svelte';
     import { productInfo } from '../stores/StoresData';
     import { addToCart } from '../stores/AddCartData';
-	import { url ,goto } from '@sveltech/routify';
+	import { goto } from '@sveltech/routify';
 	import * as _ from 'lodash'
 	import toastr from 'toastr';
 	import 'toastr/build/toastr.min.css';
 	toastr.options.positionClass = 'toast-top-right ';
 	toastr.options.timeOut = 2000;
     //for image slider
-    import { onDestroy, onMount } from 'svelte';
     let counter:number = 1;
     function changeSlide(n) {
         showDivs(counter += n);
@@ -60,9 +60,9 @@
       </div>
   </div>
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-img-redundant-alt -->
-<div class="grid grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4 lg:gap-4 gap-1 md:mx-5 mx-1 pt-3"> 
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 md:gap-2 lg:grid-cols-4 lg:gap-4 gap-1 md:mx-5 mx-1 pt-3"> 
      {#each productData as product}
-	     <div class="bg-white rounded-lg overflow-hidden shadow-lg border hover:border-gray-300">
+	     <div class="bg-white rounded-lg overflow-hidden shadow-lg border-double border-4 hover:border-2 hover:border-green-500">
 		     <img src="{product.productImage}" on:click={ ()=>productPage(product.productId) } alt="Product Image" class="w-full h-52 object-cover">
 			<div class="px-6 py-4">
 			    <h5 on:click={ ()=>productPage(product.productId) } class="mb-2 text-2xl font-bold tracking-tight text-gray-900">{product.productName}</h5>

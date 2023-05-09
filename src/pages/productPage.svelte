@@ -12,7 +12,7 @@
     let product = _.find(productData,p => p.productId == id)
     let quantity = 1;
     const increase = () =>{ quantity++ }
-    const decrease = () =>{ (quantity <= 1 )? '':quantity-- }
+    const decrease = () =>{ (quantity <= 1 )? quantity = 1 : quantity-- }
     function redirect(){
         $goto('../cart')
     }

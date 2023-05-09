@@ -25,7 +25,8 @@
         warning: "warning",
         invalid: "error",
         valid: "success"
-    }); 
+    });
+    
     $: disabled = !result.isValid();
 
     function handleFeedback(event){
