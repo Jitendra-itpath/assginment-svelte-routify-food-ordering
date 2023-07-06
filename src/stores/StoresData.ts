@@ -1,5 +1,6 @@
-import { writable } from 'svelte/store';
+
 import * as _ from 'lodash';
+import { writable } from 'svelte/store';
 
 export const feedbackInfo = writable([
     { userName : 'Rohit', userEmail : 'Rohit11@gmail.com' , message : "Amazing food and lightning-fast delivery, BiteBuddy is now my go-to!" },
